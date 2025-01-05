@@ -141,10 +141,18 @@ resource "aws_security_group" "mongodb_sg" {
   }
 }
 
+locals {
+  # change here, optional
+  name = "kubernetes"
+  keyname = "test"
+  instancetype = "t3a.medium"
+  ami = "ami-0a628e1e89aaedf80"
+}
+
 # EC2 Instance (Master Node)
 resource "aws_instance" "master" {
-  ami                    = "ami-0d64bb532e0502c46"
-  instance_type          = "t2.medium"
+  ami                    = local.ami
+  instance_type          = local.instancetype
   subnet_id              = aws_subnet.subnet_1.id
   key_name               = var.key_name  # Burada PEM anahtarınızın adı olacak
   vpc_security_group_ids = [
@@ -161,8 +169,8 @@ resource "aws_instance" "master" {
 
 # EC2 Instance (Worker Node)
 resource "aws_instance" "worker" {
-  ami                    = "ami-0d64bb532e0502c46"
-  instance_type          = "t2.medium"
+  ami                    = local.ami
+  instance_type          = local.instancetype
   subnet_id              = aws_subnet.subnet_1.id
   key_name               = var.key_name  # Burada PEM anahtarınızın adı olacak
   vpc_security_group_ids = [
@@ -175,21 +183,6 @@ resource "aws_instance" "worker" {
   tags = {
     Name = "k8s-worker"
   }
-}
-
-# EC2 Instance (MongoDB Node)
-resource "aws_instance" "mongodb" {
-  ami                    = "ami-0d64bb532e0502c46"
-  instance_type          = "t2.medium"
-  subnet_id              = aws_subnet.subnet_1.id
-  key_name               = var.key_name  # Burada PEM anahtarınızın adı olacak
-  vpc_security_group_ids = [aws_security_group.mongodb_sg.id]
-
-  tags = {
-    Name = "mongodb-node"
-  }
-
-  iam_instance_profile = aws_iam_instance_profile.ec2_connect_role.name
 }
 
 # IAM Role & Policy

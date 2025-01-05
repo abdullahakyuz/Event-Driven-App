@@ -15,16 +15,11 @@ tar -xvzf /tmp/kafka.tgz -C /usr/local
 mv /usr/local/kafka_${SCALA_VERSION}-${KAFKA_VERSION}/* $KAFKA_HOME
 rm -rf /tmp/kafka.tgz
 echo "dataDir=/usr/local/kafka/data/zookeeper" > $KAFKA_HOME/config/zookeeper.properties
-# Kafka Broker Yapılandırması
-    sed -i "s|log.dirs=/tmp/kafka-logs|log.dirs=/usr/local/kafka/data/kafka|g" $KAFKA_HOME/config/server.properties
-
-    # Zookeeper ve Kafka Servislerini Başlatma
-    nohup $KAFKA_HOME/bin/zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties > /var/log/zookeeper.log 2>&1 &
-    nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties > /var/log/kafka.log 2>&1 &
-
-    # Zookeeper ve Kafka'nın Başarıyla Yüklendiğini Kontrol Etme
-    sleep 10
-    netstat -plnt | grep -E "2181|9092"
+sed -i "s|log.dirs=/tmp/kafka-logs|log.dirs=/usr/local/kafka/data/kafka|g" $KAFKA_HOME/config/server.properties
+nohup $KAFKA_HOME/bin/zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.properties > /var/log/zookeeper.log 2>&1 &,
+nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties > /var/log/kafka.log 2>&1 &
+sleep 10
+netstat -plnt | grep -E "2181|9092"
 npm install
 sudo hostnamectl set-hostname kube-worker
 
