@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer
+  labels:
+    app: consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer
+  template:
+    metadata:
+      labels:
+        app: consumer
+    spec:
+      containers:
+        - name: consumer
+          image: aakyuz1/api  # Replace with the actual image name
+          env:
+            - name: KAFKA_BROKER
+              value: "kafka:9092"
+            - name: MONGO_URI
+              value: "mongodb://mongo:27017"
+          ports:
+            - containerPort: 3000  # Adjust if necessary based on your consumer application

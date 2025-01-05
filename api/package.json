@@ -1,0 +1,20 @@
+{
+    "name": "api",
+    "version": "1.0.0",
+    "description": "api app",
+    "main": "api.js",
+    "scripts": {
+        "start": "node api.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "mongodb": "^4.2.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.12"
+    },
+    "author": "api",
+    "license": "ISC",
+    "keywords": []
+}

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: aakyuz1/producer # Replace with your actual API image
+          env:
+            - name: MONGO_URI
+              value: mongodb://mongo:27017
+          ports:
+            - containerPort: 3000

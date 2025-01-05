@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer
+  labels:
+    app: producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+      containers:
+        - name: producer
+          image: aakyuz1/consumer  # Replace with the actual image name
+          env:
+            - name: KAFKA_BROKER
+              value: kafka:9092
+          ports:
+            - containerPort: 8080  # Replace with the actual port if different
