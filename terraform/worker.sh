@@ -20,7 +20,7 @@ nohup $KAFKA_HOME/bin/zookeeper-server-start.sh $KAFKA_HOME/config/zookeeper.pro
 nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties > /var/log/kafka.log 2>&1 &
 sleep 10
 netstat -plnt | grep -E "2181|9092"
-npm install
+apt npm install -y
 sudo hostnamectl set-hostname kube-worker
 
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
@@ -31,7 +31,7 @@ sudo apt-get update
 
 sudo apt-get install -y docker.io
 
-sudo apt-get install -y kubelet=1.28.2-00 kubeadm=1.28.2-00 kubectl=1.28.2-00 kubernetes-cni
+sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
 
 sudo apt-mark hold kubelet kubeadm kubectl
 
