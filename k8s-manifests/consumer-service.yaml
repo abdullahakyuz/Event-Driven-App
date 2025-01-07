@@ -3,7 +3,9 @@ kind: Service
 metadata:
   name: consumer
 spec:
-  ports:
-  - port: 8081
   selector:
     app: consumer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

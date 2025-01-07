@@ -1,0 +1,38 @@
+replicaCount: 1
+
+image:
+  repository: wurstmeister/kafka
+  tag: 2.13-2.7.0
+  pullPolicy: IfNotPresent
+
+consumerImage:
+  repository: aakyuz1/consumer
+  tag: latest
+  pullPolicy: IfNotPresent
+
+apiImage:
+  repository: aakyuz1/api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: "9092"
+
+resources:
+  limits:
+    cpu: "2"
+    memory: "4Gi"
+  requests:
+    cpu: "1"
+    memory: "2Gi"
+
+env:
+  KAFKA_BROKER: "kafka:9092"
+  MONGO_URI: "mongodb://your-mongo-uri"
+  KAFKA_GROUP_ID: "your-consumer-group"
+  KAFKA_TOPIC: "your-topic"
+  KAFKA_RETRY_TOPIC: "your-retry-topic"
+  KAFKA_DLQ_TOPIC: "your-dlq-topic"
+  KAFKA_RETRY_BACKOFF_MS: "5000"
+  KAFKA_MAX_RETRIES: "3"

@@ -16,26 +16,27 @@ spec:
     spec:
       containers:
       - name: consumer
-        image: your-consumer-image
+        image: aakyuz1/consumer:latest
+        imagePullPolicy: IfNotPresent
         env:
         - name: KAFKA_BOOTSTRAP_SERVERS
-          value: kafka:9092
+          value: "kafka:9092"
         - name: KAFKA_GROUP_ID
-          value: your-consumer-group
+          value: "your-consumer-group"
         - name: KAFKA_TOPIC
-          value: your-topic
+          value: "your-topic"
         - name: KAFKA_RETRY_TOPIC
-          value: your-retry-topic
+          value: "your-retry-topic"
         - name: KAFKA_DLQ_TOPIC
-          value: your-dlq-topic
+          value: "your-dlq-topic"
         - name: KAFKA_RETRY_BACKOFF_MS
           value: "5000"
         - name: KAFKA_MAX_RETRIES
           value: "3"
         resources:
           limits:
-            cpu: "1"
-            memory: 2Gi
+            cpu: "2"
+            memory: "4Gi"
           requests:
-            cpu: "0.5"
-            memory: 1Gi
+            cpu: "1"
+            memory: "2Gi"

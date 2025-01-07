@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: api
+  labels:
+    app: api
 spec:
   replicas: 1
   selector:
@@ -14,9 +16,15 @@ spec:
     spec:
       containers:
       - name: api
-        image: aakyuz1/api
+        image: aakyuz1/api:latest
+        imagePullPolicy: IfNotPresent
         env:
         - name: MONGO_URI
-          value: mongodb://mongo:27017/events
-        ports:
-        - containerPort: 3000
+          value: "mongodb://your-mongo-uri"
+        resources:
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+          requests:
+            cpu: "1"
+            memory: "2Gi"

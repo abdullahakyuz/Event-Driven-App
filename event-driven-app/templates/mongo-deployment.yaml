@@ -1,21 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zookeeper
-  labels:
-    app: zookeeper
+  name: mongo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: zookeeper
+      app: mongo
   template:
     metadata:
       labels:
-        app: zookeeper
+        app: mongo
     spec:
       containers:
-      - name: zookeeper
-        image: zookeeper:3.6.3
+      - name: mongo
+        image: mongo:4.4.6
         ports:
-        - containerPort: 2181
+        - containerPort: 27017
