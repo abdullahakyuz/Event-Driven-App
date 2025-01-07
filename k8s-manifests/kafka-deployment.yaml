@@ -15,21 +15,56 @@ spec:
         app: kafka
     spec:
       containers:
-        - name: kafka
-          image: bitnami/kafka:latest
-          env:
-            - name: KAFKA_BROKER_ID
-              value: "1"
-            - name: KAFKA_CFG_ZOOKEEPER_CONNECT
-              value: "zookeeper:2181"
-            - name: ALLOW_PLAINTEXT_LISTENER
-              value: "yes"
-            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
-              value: "PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT"
-            - name: KAFKA_CFG_LISTENERS
-              value: "PLAINTEXT://:9092"
-            - name: KAFKA_CFG_ADVERTISED_LISTENERS
-              value: "PLAINTEXT://kafka:9092"
-          ports:
-            - containerPort: 9092
-              name: kafka-port
+      - name: kafka
+        image: wurstmeister/kafka:2.13-2.7.0
+        ports:
+        - containerPort: 9092
+        env:
+        - name: KAFKA_LISTENERS
+          value: PLAINTEXT://0.0.0.0:9092
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: zookeeper:2181
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: PLAINTEXT://kafka:9092
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: PLAINTEXT:PLAINTEXT
+        - name: KAFKA_INTER_BROKER_LISTENER_NAME
+          value: PLAINTEXT
+        - name: KAFKA_BROKER_ID
+          value: "1"
+        - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+          value: "1"
+        - name: KAFKA_LOG_RETENTION_HOURS
+          value: "168"
+        - name: KAFKA_LOG_DIRS
+          value: /kafka-logs
+        - name: KAFKA_LOG4J_LOGGERS
+          value: "kafka.controller=DEBUG,kafka.producer.async.DefaultEventHandler=DEBUG,state.change.logger=DEBUG"
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
+          requests:
+            cpu: "1"
+            memory: 2Gi
+        volumeMounts:
+        - name: kafka-data
+          mountPath: /kafka-logs
+      - name: jmx-exporter
+        image: prom/jmx-exporter:0.16.1
+        ports:
+        - containerPort: 5556
+        volumeMounts:
+        - name: jmx-config
+          mountPath: /etc/jmx-exporter
+        args:
+        - --config.file=/etc/jmx-exporter/config.yaml
+      volumes:
+      - name: kafka-data
+        emptyDir: {}
+      - name: jmx-config
+        configMap:
+          name: jmx-config
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000

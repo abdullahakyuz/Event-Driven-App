@@ -15,12 +15,27 @@ spec:
         app: consumer
     spec:
       containers:
-        - name: consumer
-          image: aakyuz1/api  # Replace with the actual image name
-          env:
-            - name: KAFKA_BROKER
-              value: "kafka:9092"
-            - name: MONGO_URI
-              value: "mongodb://mongo:27017"
-          ports:
-            - containerPort: 3000  # Adjust if necessary based on your consumer application
+      - name: consumer
+        image: your-consumer-image
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: kafka:9092
+        - name: KAFKA_GROUP_ID
+          value: your-consumer-group
+        - name: KAFKA_TOPIC
+          value: your-topic
+        - name: KAFKA_RETRY_TOPIC
+          value: your-retry-topic
+        - name: KAFKA_DLQ_TOPIC
+          value: your-dlq-topic
+        - name: KAFKA_RETRY_BACKOFF_MS
+          value: "5000"
+        - name: KAFKA_MAX_RETRIES
+          value: "3"
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: "0.5"
+            memory: 1Gi

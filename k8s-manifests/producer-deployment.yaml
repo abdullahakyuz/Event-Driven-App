@@ -15,10 +15,13 @@ spec:
         app: producer
     spec:
       containers:
-        - name: producer
-          image: aakyuz1/consumer  # Replace with the actual image name
-          env:
-            - name: KAFKA_BROKER
-              value: kafka:9092
-          ports:
-            - containerPort: 8080  # Replace with the actual port if different
+      - name: producer
+        image: aakyuz1/producer
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_BROKER
+          value: kafka:9092
+        - name: KAFKA_TOPIC
+          value: events
+        ports:
+        - containerPort: 8080

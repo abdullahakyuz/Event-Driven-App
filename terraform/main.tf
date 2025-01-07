@@ -176,6 +176,10 @@ resource "aws_instance" "master" {
   user_data              = file("master.sh")
   iam_instance_profile   = aws_iam_instance_profile.ec2_connect_role.name
 
+  root_block_device {
+    volume_size = 100  # GB cinsinden disk boyutu
+    volume_type = "gp3"  # (opsiyonel) Volume türü: gp2, gp3, io1 vb.
+
   tags = {
     Name = "k8s-master"
   }
@@ -193,6 +197,10 @@ resource "aws_instance" "worker" {
   ]
   user_data              = file("worker.sh")
   iam_instance_profile   = aws_iam_instance_profile.ec2_connect_role.name
+
+    root_block_device {
+    volume_size = 100  # GB cinsinden disk boyutu
+    volume_type = "gp3"  # (opsiyonel) Volume türü: gp2, gp3, io1 vb.
 
   tags = {
     Name = "k8s-worker"
