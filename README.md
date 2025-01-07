@@ -68,7 +68,7 @@ curl http://<api-service-ip>/events?eventType=test-event
 - `k8s-manifests/`: Kubernetes manifest files
 - `event-driven-app/`: Helm chart files
 - `terraform/`: Terraform files
-- `src/`: Application source code
+- `apps/`: Application source code and Docker compose file
 
 ## Contributing
 If you would like to contribute, please submit a pull request or open an issue.
